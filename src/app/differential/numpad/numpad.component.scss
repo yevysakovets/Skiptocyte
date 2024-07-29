@@ -1,0 +1,21 @@
+.flash {
+  animation: blinker 0.2s linear 0s;
+}
+
+@keyframes blinker {
+  0% {
+    border: 2px solid white;
+  }
+  100% {
+    border: none;
+  }
+}
+.mat-button-toggle-checked {
+  background-color: #94a3b8;
+}
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #fff;
+}
+::ng-deep .mat-form-field-wrapper {
+  margin-bottom: -1.25em;
+}

@@ -1,0 +1,10 @@
+<button mat-raised-button [class]="buttonClass" (click)="onSubscribe()">
+  <div class="flex gap-2 justify-center items-center">
+    <mat-spinner
+      diameter="25"
+      *ngIf="loadingCheckoutSession"
+      color="accent"
+    ></mat-spinner>
+    <span>{{ text || "Checkout" }}</span>
+  </div>
+</button>

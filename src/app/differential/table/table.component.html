@@ -1,0 +1,94 @@
+<div class="p-3 bg-slate-900 rounded-md">
+  <div class="w-full flex gap-1 md:gap-2 lg:gap-4 h-12 overflow-hidden">
+    <mat-form-field
+      appearance="fill"
+      class="bg-slate-100 rounded md:w-auto"
+      [class.w-36]="user.isTrialingOrSubbed$ | async"
+    >
+      <mat-label>Presets</mat-label>
+      <mat-select [(value)]="index" (selectionChange)="changeClient($event)">
+        <mat-select-trigger>{{
+          presetService.currentPreset?.name
+        }}</mat-select-trigger>
+        <mat-option
+          *ngFor="let preset of presetService.presets; let i = index"
+          value="{{ i }}"
+          class="relative"
+          >{{ preset.name
+          }}<mat-icon
+            *ngIf="presetService.presets.length"
+            (click)="deletePreset(i)"
+            class="absolute -right-2 top-1/4 hover:font-bold transition-all duration-200"
+          >
+            close icon
+          </mat-icon></mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button class="custom-button" (click)="updatePreset()">
+      <span *ngIf="isLoading" class="flex items-center gap-2"
+        ><mat-spinner diameter="25" color="accent"></mat-spinner
+        ><span class="hidden md:block">Saving...</span></span
+      >
+      <span *ngIf="!isLoading"
+        ><span class="md:hidden flex items-center justify-center"
+          ><mat-icon>save</mat-icon></span
+        ><span class="hidden md:block">Save</span></span
+      >
+    </button>
+    <button mat-raised-button class="custom-button" (click)="op.toggle($event)">
+      <span>New</span>
+    </button>
+    <button
+      mat-raised-button
+      class="custom-button !w-fit"
+      (click)="openDialog()"
+      *ngIf="user.isTrialingOrSubbed$ | async"
+    >
+      <mat-icon>settings</mat-icon>
+    </button>
+  </div>
+  <div
+    class="text-slate-50 text-center text-xs md:text-lg md:tracking-wide w-full flex gap-2 md:gap-3 justify-around pl-4 pr-2 py-4"
+  >
+    <span class="w-[8%] md:w-[5%]">Ignore</span>
+    <span class="w-[12%]">Key</span>
+    <span class="w-[28%]">Cell</span>
+    <span class="w-[12%]">Count</span>
+    <span class="w-[12%]">Relative</span>
+    <span class="w-[16%] md:w-[19%]">Absolute</span>
+    <span class="w-[24px]"></span>
+  </div>
+  <div class="table-rows-container">
+    <ng-container *ngIf="!presetService.initialLoad">
+      <div
+        *ngFor="let _ of [].constructor(5)"
+        class="w-full h-10 animate-pulse rounded bg-slate-600 mb-1"
+      ></div>
+    </ng-container>
+    <div
+      cdkDropList
+      class="drag-drop-container grid gap-1"
+      (cdkDropListDropped)="drop($event)"
+    >
+      <app-row
+        class="table-row"
+        cdkDrag
+        *ngFor="let item of presetService.currentPreset?.rows; let i = index"
+        [item]="item"
+        [i]="i"
+        ><div class="example-custom-placeholder" *cdkDragPlaceholder></div
+      ></app-row>
+    </div>
+    <button
+      *ngIf="presetService.initialLoad"
+      (click)="presetService.addRow()"
+      mat-raised-button
+      class="bg-slate-800 w-full !mt-2 text-slate-200 hover:bg-slate-700 hover:text-slate-50"
+    >
+      Add Cell
+    </button>
+  </div>
+</div>
+<!-- dropdown to make new preset -->
+<p-overlayPanel #op><app-new-preset [op]="op"></app-new-preset></p-overlayPanel>

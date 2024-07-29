@@ -1,0 +1,15 @@
+<div *ngFor="let row of rows">
+  <div class="flex justify-center gap-1 my-1 w-full">
+    <button
+      class="kbd kbd-lg grid px-1 text-center max-w-[45px] max-h-[45px]"
+      *ngFor="let key of row"
+      (click)="presetService.onNumpadClick(key)"
+      [class.flash]="key === pressedKey"
+    >
+      <span>{{ key }}</span
+      ><span class="text-xs overflow-hidden whitespace-nowrap">
+        {{ keyBindingCheck(key) }}
+      </span>
+    </button>
+  </div>
+</div>
